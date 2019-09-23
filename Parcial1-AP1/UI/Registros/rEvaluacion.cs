@@ -22,7 +22,7 @@ namespace Parcial1_AP1.UI.Registros
 
         private void EstudiantetextBox_TextChanged(object sender, EventArgs e)
         {
-
+            
         }
 
         private void LimpiarCampos()
@@ -66,15 +66,21 @@ namespace Parcial1_AP1.UI.Registros
         {
             Evaluacion e = new Evaluacion();
 
+            e.IDEvaluacion1 = Convert.ToInt32(IDEvaluacionnumericUpDown.Value);
+            e.Estudiante1 = EstudiantetextBox.Text;
+            e.Valor = VALOR;
+
             decimal auxLogrado, auxPerdido;
             auxLogrado = e.Logadro = Convert.ToDecimal(LogradotextBox.Text);
             auxPerdido = VALOR - auxLogrado;
+            if (auxPerdido <= 25)
+                e.Pronostico = 1;
+            if (auxPerdido >= 25 && auxPerdido <= 30)
+                e.Pronostico = 2;
+            if (auxPerdido > 30)
+                e.Pronostico = 3;
 
-            e.IDEvaluacion1 = Convert.ToInt32(IDEvaluacionnumericUpDown.Value);
-            e.Estudiante1 = EstudiantetextBox.Text;
-            e.Valor = VALOR; 
-            e.Perdido = Convert.ToDecimal(PerdidotextBox.Text);
-            e.Pronostico = PronosticocomboBox.SelectedIndex;
+            e.Perdido = auxPerdido;
 
             return e;
         }
@@ -88,6 +94,7 @@ namespace Parcial1_AP1.UI.Registros
                 MyErrorProvider.SetError(EstudiantetextBox, "El campo estudiante no puede estar vacio");
                 paso = false;
             }
+
             if (string.IsNullOrWhiteSpace(LogradotextBox.Text))
             {
                 MyErrorProvider.SetError(LogradotextBox, "El campo logrado no puede estar vacio");

@@ -182,6 +182,7 @@
             this.ValortextBox.ReadOnly = true;
             this.ValortextBox.Size = new System.Drawing.Size(63, 20);
             this.ValortextBox.TabIndex = 3;
+            this.ValortextBox.Text = "31";
             this.ValortextBox.TextChanged += new System.EventHandler(this.EstudiantetextBox_TextChanged);
             // 
             // PronosticocomboBox
