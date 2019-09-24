@@ -150,6 +150,7 @@
             this.Controls.Add(this.Filtrolabel);
             this.Controls.Add(this.Hastalabel);
             this.Controls.Add(this.Desdelabel);
+            this.MaximizeBox = false;
             this.Name = "cEvaluacion";
             this.Text = "Consultar Evaluación";
             ((System.ComponentModel.ISupportInitialize)(this.ConsultardataGridView)).EndInit();

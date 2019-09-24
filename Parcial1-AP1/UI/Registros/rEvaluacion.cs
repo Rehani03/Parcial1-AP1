@@ -14,15 +14,10 @@ namespace Parcial1_AP1.UI.Registros
 {
     public partial class rEvaluacion : Form
     {
-        private const int VALOR = 31;
+        private decimal valor, logrado;
         public rEvaluacion()
         {
             InitializeComponent();
-        }
-
-        private void EstudiantetextBox_TextChanged(object sender, EventArgs e)
-        {
-            
         }
 
         private void LimpiarCampos()
@@ -65,25 +60,32 @@ namespace Parcial1_AP1.UI.Registros
         private Evaluacion LlenaClase()
         {
             Evaluacion e = new Evaluacion();
+            decimal auxLogrado, auxPerdido, auxValor;
 
             e.IDEvaluacion1 = Convert.ToInt32(IDEvaluacionnumericUpDown.Value);
             e.Estudiante1 = EstudiantetextBox.Text;
-            e.Valor = VALOR;
-
-            decimal auxLogrado, auxPerdido;
+            auxValor = e.Valor = Convert.ToDecimal(ValortextBox.Text);
             auxLogrado = e.Logadro = Convert.ToDecimal(LogradotextBox.Text);
-            auxPerdido = VALOR - auxLogrado;
-            if (auxPerdido <= 25)
-                e.Pronostico = 1;
-            if (auxPerdido >= 25 && auxPerdido <= 30)
-                e.Pronostico = 2;
-            if (auxPerdido > 30)
-                e.Pronostico = 3;
+            auxPerdido = auxValor - auxLogrado;
 
+            e.Pronostico = CondicionPronostico(auxPerdido);
             e.Fecha = FechadateTimePicker.Value;
             e.Perdido = auxPerdido;
 
             return e;
+        }
+
+        private int CondicionPronostico(decimal auxPerdido)
+        {
+            int aux=0;
+            if (auxPerdido < 25)
+                return aux = 0;
+            if (auxPerdido >= 25 && auxPerdido <= 30)
+                return aux = 1;
+            if (auxPerdido > 30)
+                return aux = 2;
+
+            return aux;
         }
 
         private bool Validar()
@@ -93,26 +95,56 @@ namespace Parcial1_AP1.UI.Registros
 
             if (string.IsNullOrWhiteSpace(EstudiantetextBox.Text))
             {
-                MyErrorProvider.SetError(EstudiantetextBox, "El campo estudiante no puede estar vacio");
+                MyErrorProvider.SetError(EstudiantetextBox, "El campo estudiante no puede estar vacio.");
+                paso = false;
+            }
+
+            if (string.IsNullOrWhiteSpace(ValortextBox.Text))
+            {
+                MyErrorProvider.SetError(ValortextBox, "El campo Valor no puede estar vacio.");
                 paso = false;
             }
 
             if (string.IsNullOrWhiteSpace(LogradotextBox.Text))
             {
-                MyErrorProvider.SetError(LogradotextBox, "El campo logrado no puede estar vacio");
+                MyErrorProvider.SetError(LogradotextBox, "El campo logrado no puede estar vacio.");
                 paso = false;
             }
-            else
+
+            try
             {
-                try
-                {
-                    decimal logrado = Convert.ToDecimal(LogradotextBox.Text);
-                }
-                catch (Exception)
-                {
-                    MyErrorProvider.SetError(LogradotextBox, "El campo logrado debe ser numerico");
-                    paso = false;
-                }
+                valor = Convert.ToDecimal(ValortextBox.Text);
+                
+            }
+            catch (Exception)
+            {
+
+                MyErrorProvider.SetError(ValortextBox, "El campo valor debe ser numerico.");
+                paso = false;
+            }
+
+            try
+            {
+                logrado = Convert.ToDecimal(LogradotextBox.Text);
+
+            }
+            catch (Exception)
+            {
+
+                MyErrorProvider.SetError(ValortextBox, "El campo logrado debe ser numerico.");
+                paso = false;
+            }
+
+            if(valor < 0)
+            {
+                MyErrorProvider.SetError(ValortextBox, "El campo valor no puede ser menor a cero.");
+                paso = false;
+            }
+
+            if(logrado < 0)
+            {
+                MyErrorProvider.SetError(LogradotextBox, "El campo logrado no ser menor a cero.");
+                paso = false;
             }
 
             return paso;
@@ -183,17 +215,47 @@ namespace Parcial1_AP1.UI.Registros
             }
         }
 
+        private void LogradotextBox_TextChanged(object sender, EventArgs e)
+        {
+
+            decimal valor, logrado, perdido;
+            MyErrorProvider.Clear();
+            if (!Validar())
+                return;
+
+            try
+            {
+                valor = Convert.ToDecimal(ValortextBox.Text);
+                logrado = Convert.ToDecimal(LogradotextBox.Text);
+                perdido = valor - logrado;  
+                PerdidotextBox.Text = perdido.ToString();
+                PronosticocomboBox.SelectedIndex = CondicionPronostico(perdido);
+                Console.WriteLine(logrado);
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+           
+        }
+
         private void Eliminarbutton_Click(object sender, EventArgs e)
         {
             int ID = Convert.ToInt32(IDEvaluacionnumericUpDown.Value);
             bool paso;
 
-            paso = EvaluacionBLL.Eliminar(ID);
+            if (!Existe())
+            {
+                MessageBox.Show("No se puede eliminar porque no existe", "Fallo", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                LimpiarCampos();
+                return;
+            }
 
+            paso = EvaluacionBLL.Eliminar(ID);
             if (paso)
             {
-                MessageBox.Show("Eliminado", "Información", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 LimpiarCampos();
+                MessageBox.Show("Eliminado", "Información", MessageBoxButtons.OK, MessageBoxIcon.Information); 
             }
             else
             {
