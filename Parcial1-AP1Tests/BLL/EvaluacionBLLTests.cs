@@ -33,7 +33,7 @@ namespace Parcial1_AP1.BLL.Tests
         public void ModificarTest()
         {
             Evaluacion e = new Evaluacion();
-            e.IDEvaluacion1 = 4;
+            e.IDEvaluacion1 = 3;
             e.Estudiante1 = "Jose";
             e.Fecha = DateTime.Now;
             e.Valor = 31;
@@ -51,15 +51,15 @@ namespace Parcial1_AP1.BLL.Tests
             Evaluacion e;
             e = EvaluacionBLL.Buscar(1);
 
-            Assert.AreEqual(e,e);
+            Assert.IsNotNull(e);
         }
 
         [TestMethod()]
         public void EliminarTest()
         {
             bool paso;
-            paso = EvaluacionBLL.Eliminar(4);
-            Assert.AreEqual(paso, paso);
+            paso = EvaluacionBLL.Eliminar(3);
+            Assert.AreEqual(paso, true);
         }
 
         [TestMethod()]
@@ -67,7 +67,7 @@ namespace Parcial1_AP1.BLL.Tests
         {
             List<Evaluacion> e = new List<Evaluacion>();
             e = EvaluacionBLL.GetList(p => true);
-            Assert.AreEqual(e, e);
+            Assert.IsNotNull(e);
             
         }
     }

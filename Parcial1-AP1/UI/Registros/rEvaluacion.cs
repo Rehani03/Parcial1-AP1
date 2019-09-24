@@ -14,7 +14,7 @@ namespace Parcial1_AP1.UI.Registros
 {
     public partial class rEvaluacion : Form
     {
-        private decimal valor, logrado;
+       
         public rEvaluacion()
         {
             InitializeComponent();
@@ -30,6 +30,7 @@ namespace Parcial1_AP1.UI.Registros
             LogradotextBox.Text = string.Empty;
             PerdidotextBox.Text = string.Empty;
             PronosticocomboBox.Text = string.Empty;
+            MyErrorProvider.Clear();
         }
 
         private void LlenaCampos(Evaluacion e)
@@ -91,6 +92,7 @@ namespace Parcial1_AP1.UI.Registros
         private bool Validar()
         {
             bool paso = true;
+            decimal valor = 0, logrado = 0;
             MyErrorProvider.Clear();
 
             if (string.IsNullOrWhiteSpace(EstudiantetextBox.Text))
@@ -146,6 +148,64 @@ namespace Parcial1_AP1.UI.Registros
                 MyErrorProvider.SetError(LogradotextBox, "El campo logrado no ser menor a cero.");
                 paso = false;
             }
+
+            return paso;
+        }
+
+        private bool ValidarTareasProyecto()
+        {
+            bool paso = true;
+            decimal valor = 0, logrado=0;
+            MyErrorProvider.Clear();
+
+            if (string.IsNullOrWhiteSpace(ValortextBox.Text))
+            {
+                MyErrorProvider.SetError(ValortextBox, "El campo Valor no puede estar vacio.");
+                paso = false;
+            }
+
+            if (string.IsNullOrWhiteSpace(LogradotextBox.Text))
+            {
+                MyErrorProvider.SetError(LogradotextBox, "El campo logrado no puede estar vacio.");
+                paso = false;
+            }
+
+            try
+            {
+                valor = Convert.ToDecimal(ValortextBox.Text);
+
+            }
+            catch (Exception)
+            {
+
+                MyErrorProvider.SetError(ValortextBox, "El campo valor debe ser numerico.");
+                paso = false;
+            }
+
+            try
+            {
+                logrado = Convert.ToDecimal(LogradotextBox.Text);
+
+            }
+            catch (Exception)
+            {
+
+                MyErrorProvider.SetError(LogradotextBox,"El campo logrado debe ser numerico.");
+                paso = false;
+            }
+
+            if (valor < 0)
+            {
+                MyErrorProvider.SetError(ValortextBox, "El campo valor no puede ser menor a cero.");
+                paso = false;
+            }
+
+            if (logrado < 0)
+            {
+                MyErrorProvider.SetError(LogradotextBox, "El campo logrado no ser menor a cero.");
+                paso = false;
+            }
+
 
             return paso;
         }
@@ -211,16 +271,16 @@ namespace Parcial1_AP1.UI.Registros
             }
             else
             {
-                MessageBox.Show("Evaluación no encontrada");
+                MessageBox.Show("Evaluación no encontrada", "Información", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                LimpiarCampos();
             }
         }
 
         private void LogradotextBox_TextChanged(object sender, EventArgs e)
         {
-
             decimal valor, logrado, perdido;
-            MyErrorProvider.Clear();
-            if (!Validar())
+
+             if (!ValidarTareasProyecto())
                 return;
 
             try
@@ -230,7 +290,6 @@ namespace Parcial1_AP1.UI.Registros
                 perdido = valor - logrado;  
                 PerdidotextBox.Text = perdido.ToString();
                 PronosticocomboBox.SelectedIndex = CondicionPronostico(perdido);
-                Console.WriteLine(logrado);
             }
             catch (Exception)
             {
