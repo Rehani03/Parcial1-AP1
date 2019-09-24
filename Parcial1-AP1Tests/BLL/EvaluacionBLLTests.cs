@@ -18,11 +18,11 @@ namespace Parcial1_AP1.BLL.Tests
 
             Evaluacion e = new Evaluacion();
             e.IDEvaluacion1 = 0;
-            e.Estudiante1 = "Pedro";
+            e.Estudiante1 = "Pedro Tanto";
             e.Fecha = DateTime.Now;
             e.Valor = 31;
-            e.Logadro = 20;
-            e.Perdido = 14;
+            e.Logadro = 24;
+            e.Perdido = 6;
             e.Pronostico = 1;
             bool paso = EvaluacionBLL.Guardar(e);
             
@@ -58,7 +58,7 @@ namespace Parcial1_AP1.BLL.Tests
         public void EliminarTest()
         {
             bool paso;
-            paso = EvaluacionBLL.Eliminar(3);
+            paso = EvaluacionBLL.Eliminar(1);
             Assert.AreEqual(paso, true);
         }
 
