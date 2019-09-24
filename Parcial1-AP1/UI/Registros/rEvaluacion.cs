@@ -80,6 +80,7 @@ namespace Parcial1_AP1.UI.Registros
             if (auxPerdido > 30)
                 e.Pronostico = 3;
 
+            e.Fecha = FechadateTimePicker.Value;
             e.Perdido = auxPerdido;
 
             return e;
@@ -130,7 +131,7 @@ namespace Parcial1_AP1.UI.Registros
         private void Gurdarbutton_Click(object sender, EventArgs e)
         {
             bool paso;
-            Evaluacion evaluacion;
+            Evaluacion evaluacion = new Evaluacion();
 
             if (!Validar())
                 return;
