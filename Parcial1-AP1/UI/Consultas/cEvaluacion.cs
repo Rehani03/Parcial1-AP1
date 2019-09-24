@@ -49,6 +49,10 @@ namespace Parcial1_AP1.UI.Consultas
                         MessageBox.Show("Esta opción no existe");
                         break;
                 }
+
+                lista = lista.Where(p => p.Fecha.Date >= DesdedateTimePicker.Value.Date
+                && p.Fecha.Date <= HastadateTimePicker.Value.Date).ToList();
+
             }
             else
             {

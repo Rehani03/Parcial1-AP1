@@ -32,25 +32,43 @@ namespace Parcial1_AP1.BLL.Tests
         [TestMethod()]
         public void ModificarTest()
         {
-            Assert.Fail();
+            Evaluacion e = new Evaluacion();
+            e.IDEvaluacion1 = 4;
+            e.Estudiante1 = "Jose";
+            e.Fecha = DateTime.Now;
+            e.Valor = 31;
+            e.Logadro = 20;
+            e.Perdido = 14;
+            e.Pronostico = 1;
+            bool paso = EvaluacionBLL.Guardar(e);
+
+            Assert.AreEqual(paso, true);
         }
 
         [TestMethod()]
         public void BuscarTest()
         {
-            Assert.Fail();
+            Evaluacion e;
+            e = EvaluacionBLL.Buscar(1);
+
+            Assert.AreEqual(e,e);
         }
 
         [TestMethod()]
         public void EliminarTest()
         {
-            Assert.Fail();
+            bool paso;
+            paso = EvaluacionBLL.Eliminar(4);
+            Assert.AreEqual(paso, paso);
         }
 
         [TestMethod()]
         public void GetListTest()
         {
-            Assert.Fail();
+            List<Evaluacion> e = new List<Evaluacion>();
+            e = EvaluacionBLL.GetList(p => true);
+            Assert.AreEqual(e, e);
+            
         }
     }
 }
