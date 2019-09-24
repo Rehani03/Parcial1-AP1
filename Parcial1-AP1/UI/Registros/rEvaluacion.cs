@@ -89,6 +89,7 @@ namespace Parcial1_AP1.UI.Registros
         private bool Validar()
         {
             bool paso = true;
+            MyErrorProvider.Clear();
 
             if (string.IsNullOrWhiteSpace(EstudiantetextBox.Text))
             {
