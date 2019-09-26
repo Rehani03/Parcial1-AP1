@@ -41,21 +41,7 @@ namespace Parcial1_AP1.UI.Registros
             ValortextBox.Text = Convert.ToString(e.Valor);
             LogradotextBox.Text = Convert.ToString(e.Logadro);
             PerdidotextBox.Text = Convert.ToString(e.Perdido);
-            if (e.Pronostico == 1)
-            {
-                PronosticocomboBox.Text = "Continuar";
-                PronosticocomboBox.Show();
-            }
-            if (e.Pronostico == 2)
-            {
-                PronosticocomboBox.Text = "Suspenso";
-                PronosticocomboBox.Show();
-            }
-            if (e.Pronostico == 3)
-            {
-                PronosticocomboBox.Text = "Retirar";
-                PronosticocomboBox.Show();
-            }
+            PronosticocomboBox.SelectedIndex = e.Pronostico;
         }
 
         private Evaluacion LlenaClase()
@@ -65,14 +51,13 @@ namespace Parcial1_AP1.UI.Registros
 
             e.IDEvaluacion1 = Convert.ToInt32(IDEvaluacionnumericUpDown.Value);
             e.Estudiante1 = EstudiantetextBox.Text;
+            e.Fecha = FechadateTimePicker.Value;
             auxValor = e.Valor = Convert.ToDecimal(ValortextBox.Text);
             auxLogrado = e.Logadro = Convert.ToDecimal(LogradotextBox.Text);
             auxPerdido = auxValor - auxLogrado;
-
-            e.Pronostico = CondicionPronostico(auxPerdido);
-            e.Fecha = FechadateTimePicker.Value;
             e.Perdido = auxPerdido;
-
+            e.Pronostico = CondicionPronostico(auxPerdido);
+            
             return e;
         }
 
